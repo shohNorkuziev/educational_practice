@@ -1,7 +1,3 @@
-<?php
-    include_once $_SERVER['DOCUMENT_ROOT'].'/welcome_with_php/includes/helpers.inc.php';
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -19,17 +15,18 @@
         <form action="?deletejoke" method="post">
             <blockquote>
                 <p>
-                    <?php echo htmlout($joke['text']);?>
+                    <?php echo htmlspecialchars($joke['text'], ENT_QUOTES, 'UTF-8');
+                    ?>
                     <input type="hidden" name="id" value="<?php echo $joke['id']; ?>">
                     <input type="submit" value="Удалить">
-                    <a href="mailto:
-                    <?php echo htmlout($joke['email']); ?>">
-                    <?php echo htmlout($joke['name']); ?>
+                    <a href="mailto:<?php echo htmlspecialchars($joke['email'], ENT_QUOTES, 'UTF-8'); ?>">
+                    <?php echo htmlspecialchars($joke['name'], ENT_QUOTES , 'UTF-8') ?>
                     </a>
                 </p>
             </blockquote>
         </form>
     <?php endforeach; ?>
+    <p><a href="..">Вернуться на главную страницу</a></p>
 </body>
 
 </html>
