@@ -33,7 +33,54 @@
          header('Location: .');
          exit();
     }
+    if (isset($_POST['action']) and $_POST['action']=='Редактировать')
+    {
+        include $_SERVER['DOCUMENT_ROOT'] . '/welcome_with_php/includes/db.inc.php';
+        try
+        {
+            $sql='SELECT id, name, email FROM author WHERE id=:id';
+            $s=$pdo->prepare($sql);
+            $s->bindValue(':id', $_POST['id']);
+            $s->execute();
+        }
+        catch (PDOException $e)
+        {
+           $error='Ошибка при извлечении информации об авторе. ';
+           include 'error.html.php';
+           exit();
+        }
+        $row=$s->fetch();
+        $pageTitle='Редактировать автора';
+        $action='editform';
+        $name=$row['name'];
+        $email=$row['email'];
+        $id=$row['id'];
+        $button='Обновить информацию об авторе';
+        include 'form.html.php';
+        exit();
+    }
 
+    if (isset($_GET['editform']))
+    {
+        include $_SERVER['DOCUMENT_ROOT']. '/welcome_with_php/includes/db.inc.php';
+         try
+         {
+            $sql='UPDATE author SET name=:name, email=:email WHERE id=:id';
+            $s=$pdo->prepare($sql);
+            $s->bindValue(':id', $_POST['id']);
+            $s->bindValue(':name', $_POST['name']);
+            $s->bindValue(':email', $_POST['email']); 
+            $s->execute();
+         }
+         catch (PDOException $e)
+         {
+            $error='Ошибка при обновлении записи об авторе. ';
+            include 'error.html.php';
+            exit();
+         }
+         header('Location: .');
+         exit();
+    }
 
     include $_SERVER['DOCUMENT_ROOT'] . '/welcome_with_php/includes/db.inc.php';
     try

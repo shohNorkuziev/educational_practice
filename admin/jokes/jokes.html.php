@@ -1,3 +1,5 @@
+<?php include_once $_SERVER['DOCUMENT_ROOT'] . '/welcome_with_php/includes/helpers.inc.php'; ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,27 +7,34 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Управление шутками: результаты поиска</title>
 </head>
 
 <body>
-    <p><a href="?addjoke">Добавьте собственную шутку</a></p>
-    <p> Все шутки, которые етсть в базе данных:</p>
-    <?php foreach ($jokes as $joke) : ?>
-        <form action="?deletejoke" method="post">
-            <blockquote>
-                <p>
-                    <?php echo htmlspecialchars($joke['text'], ENT_QUOTES, 'UTF-8');
-                    ?>
-                    <input type="hidden" name="id" value="<?php echo $joke['id']; ?>">
-                    <input type="submit" value="Удалить">
-                    <a href="mailto:<?php echo htmlspecialchars($joke['email'], ENT_QUOTES, 'UTF-8'); ?>">
-                    <?php echo htmlspecialchars($joke['name'], ENT_QUOTES , 'UTF-8') ?>
-                    </a>
-                </p>
-            </blockquote>
-        </form>
-    <?php endforeach; ?>
+    <h1>результаты поиска</h1>
+    <?php if(isset($jokes)): ?>
+        <table>
+            <tr>
+                <th>Текст шутки</th>
+                <th>Действия</th>
+            </tr>
+            <?php foreach ($jokes as $joke) : ?>
+                <tr>
+                    <td><?php htmlout($joke['text']); ?></td>
+                    <td>
+                    <form action="?" method="post">
+                        <div>
+                            <input type="hidden" name="id" value="<?php htmlout($joke['id']); ?>">
+                            <input type="submit" name="action" value="Редактировать">
+                            <input type="submit" name="action" value="Удалить">
+                        </div>
+                    </form>
+                    </td>
+                </tr>
+                <?php endforeach; ?>
+        </table>
+        <?php endif; ?>
+    <p><a href="?">Искать заново</a></p>
     <p><a href="..">Вернуться на главную страницу</a></p>
 </body>
 
