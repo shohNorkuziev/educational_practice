@@ -40,7 +40,7 @@ if (isset($_GET['deletejoke']))
     }
     catch (PDOException $e)
     {
-        $error = 'Ошибка прни удалении шутки: '. $e->getMessage();
+        $error = 'Ошибка при удалении шутки: '. $e->getMessage();
         include 'error.html.php';
         exit();
     }

@@ -1,3 +1,5 @@
+<?php include_once $_SERVER['DOCUMENT_ROOT'] . '/welcome_with_php/includes/helpers.inc.php'; ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -28,12 +30,12 @@
         <select name="author" id="author">
             <option value="">Выбрать</option>
             <?php foreach($authors as $author): ?>
-            <option value="<?php htmlout($authorid['id']); ?>"><?php 
+            <option value="<?php htmlout($author['id']); ?> " <?php 
                 if ($author['id']==$authorid)
                 {
                     echo 'selected';
                 }
-                ?>
+                ?>>
                 <?php htmlout($author['name']); ?></option>
                 <?php endforeach; ?>
         </select>
@@ -50,7 +52,10 @@
             } ?>><?php htmlout($category['name']); ?></label></div>
             <?php endforeach; ?>
     </fieldset>
-    <div><input type="submit" value="Добавить"></div>
+    <div>
+        <input type="hidden" name="id" value="<?php htmlout($id); ?>">
+        <input type="submit" name="action" value="<?php htmlout($button) ?>">
+    </div>
  </form>   
 </body>
 </html>
