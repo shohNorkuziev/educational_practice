@@ -1,4 +1,18 @@
 <?php
+include_once $_SERVER['DOCUMENT_ROOT'] .'/welcome_with_php/includes/magicquotes.inc.php';
+require_once $_SERVER['DOCUMENT_ROOT'] .'/welcome_with_php/includes/access.inc.php';
+if (!userIsLoggedIn())
+{
+include '../login.html.php';
+exit () ;
+}
+if (!userHasRole('Редактор'))
+{
+$error='Доступ к этой странице имеет только Редактор';
+include '../accessdenied.html.php';
+exit ();
+}
+
 include_once $_SERVER['DOCUMENT_ROOT'].'/welcome_with_php/includes/magicquotes.inc.php';
 include $_SERVER['DOCUMENT_ROOT'].'/welcome_with_php/includes/db.inc.php';
    

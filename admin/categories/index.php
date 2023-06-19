@@ -32,6 +32,21 @@
     ?>
 
 <?php
+include_once $_SERVER['DOCUMENT_ROOT'] .'/welcome_with_php/includes/magicquotes.inc.php';
+require_once $_SERVER['DOCUMENT_ROOT'] .'/welcome_with_php/includes/access.inc.php';
+if (!userIsLoggedIn())
+{
+include '../login.html.php';
+exit () ;
+}
+if (!userHasRole('Администратор сайта'))
+{
+$error='Доступ к этой странице имеет только администратор
+сайта';
+include '…/accessdenied.html.php';
+exit ();
+}
+
 //Добавление и редактирование автора
     include_once $_SERVER['DOCUMENT_ROOT']. '/welcome_with_php/includes/db.inc.php';
     if (isset($_GET['add']))
