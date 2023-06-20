@@ -43,7 +43,7 @@ if (!userHasRole('Администратор сайта'))
 {
 $error='Доступ к этой странице имеет только администратор
 сайта';
-include '…/accessdenied.html.php';
+include '../accessdenied.html.php';
 exit ();
 }
 

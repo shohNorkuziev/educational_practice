@@ -10,7 +10,7 @@ if (!userHasRole('Администратор учетных записей'))
 {
 $error='Доступ к этой странице имеет только администратор
 учетных записей';
-include '…/accessdenied.html.php';
+include '../accessdenied.html.php';
 exit ();
 }
 //Добавление и редактирование автора
@@ -272,6 +272,19 @@ exit ();
     if (isset($_POST['action']) and $_POST['action']=='Удалить')
     {
         include $_SERVER['DOCUMENT_ROOT'] . '/welcome_with_php/includes/db.inc.php';
+        try{
+            $sql='DELETE FROM authorrole WHERE authorid = :id';
+            $s=$pdo->prepare($sql);
+            $s->bindValue(':id', $_POST['id']);
+            $s->execute();
+        }
+        catch (PDOException $e)
+        {
+            $error='Ошибка при удалении ролей автора.';
+            include 'error.html.php';
+            exit();
+        }
+
         try{
             $sql='SELECT  id FROM joke WHERE authorid=:id';
             $s=$pdo->prepare($sql);

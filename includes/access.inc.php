@@ -1,4 +1,33 @@
 <?php 
+
+function databaseContainsAuthor($email, $password)
+{
+    include 'db.inc.php';
+    try
+    {
+        $sql = 'SELECT COUNT(*) FROM author WHERE email = :email AND password = :password';
+        $s = $pdo->prepare($sql);
+        $s->bindValue(':email' , $email);
+        $s->bindValue(':password' , $password);
+        $s->execute();
+    }
+    catch (PDOException $e)
+    {
+        $error = 'Ошибка при поиске автора.' . $e->getMessage();
+        include 'error.html.php';
+        exit();
+    }
+    $row = $s->fetch();
+    if ($row[0] > 0)
+    {
+        return TRUE;
+    }
+    else
+    {
+        return FALSE;
+    }
+}
+
     function userIsLoggedIn()
     {
         if (isset($_POST['action']) and $_POST['action'] == 'login')
@@ -8,7 +37,7 @@
                 $GLOBALS['loginError'] = 'Пожалуйста, заполните оба поля';
                 return FALSE;
             }
-            $password = md5($_POST['password'] . 'int_joke');
+            $password = md5($_POST['password'].'int_joke');
             if (databaseContainsAuthor($_POST['email'] , $password))
             {
                 session_start();
@@ -41,42 +70,15 @@
         {
             return databaseContainsAuthor($_SESSION['email'], $_SESSION['password']);
         }
-        function databaseContainsAuthor($email, $password)
-        {
-            include 'db.inc.php';
-            try
-            {
-                $sql = 'SELECT COUNT(*) FROM author WHERE email = :email AND password = :password';
-                $s = $pdo->prepare($sql);
-                $s->bindValue(':eamil' , $email);
-                $s->bindValue(':password' , $password);
-                $s->execute();
-            }
-            catch (PDOException $e)
-            {
-                $error = 'Ошибка при поиске автора.' . $e->getMessage();
-                include 'error.html.php';
-                exit();
-            }
-            $row = $s->fetch();
-            if ($row[0] > 0)
-            {
-                return TRUE;
-            }
-            else
-            {
-                return FALSE;
-            }
-        }
         function userHasRole($role)
         {
             include 'db.inc.php';
 
             try
             {
-                $sql = 'SELECT COUNT(*) FROM author INNER JOIN (authorrole INNER JOIN role ON roleid = role.id) ON author.id = authorid WHERE email = :email and role.id = :roleId';
+                $sql = 'SELECT COUNT(*) FROM author INNER JOIN (authorrole INNER JOIN role ON roleid = role.id) ON author.id = authorid WHERE email = :email and role.id = :roleid';
                 $s = $pdo->prepare($sql);
-                $s->bindValue(':eamil' , $_SESSION['email']);
+                $s->bindValue(':email' , $_SESSION['email']);
                 $s->bindValue(':roleId', $role);
                 $s->execute(); 
             }
